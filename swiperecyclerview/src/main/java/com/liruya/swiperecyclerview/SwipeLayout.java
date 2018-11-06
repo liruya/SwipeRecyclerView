@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Scroller;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
@@ -43,7 +44,9 @@ public class SwipeLayout extends RelativeLayout
     private View mContentView;
     private View mActionView;
 
-    private OnSwipeItemClickListener mOnSwipeItemClickListener;
+    private Scroller mScroller;
+
+    private OnClickListener mOnClickListener;
 
     public SwipeLayout( Context context )
     {
@@ -71,6 +74,7 @@ public class SwipeLayout extends RelativeLayout
 
     private void initView( @NonNull Context context )
     {
+        mScroller = new Scroller( context );
         LayoutInflater inflater = LayoutInflater.from( context );
 
         //加载contentView
@@ -136,6 +140,52 @@ public class SwipeLayout extends RelativeLayout
                 addView( mActionView );
             }
         }
+
+        if ( mActionView != null )
+        {
+            if ( mActionView instanceof ViewGroup )
+            {
+                for ( int i = 0; i < ( (ViewGroup) mActionView ).getChildCount(); i++ )
+                {
+                    ( (ViewGroup) mActionView ).getChildAt( i ).setOnClickListener( new View.OnClickListener() {
+                        @Override
+                        public void onClick( View v )
+                        {
+                            if ( mOnClickListener != null )
+                            {
+                                mOnClickListener.onActionClick( v.getId() );
+                            }
+                        }
+                    } );
+                }
+            }
+            else
+            {
+                mActionView.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick( View v )
+                    {
+                        if ( mOnClickListener != null )
+                        {
+                            mOnClickListener.onActionClick( v.getId() );
+                        }
+                    }
+                } );
+            }
+        }
+        if ( mContentView != null )
+        {
+            mContentView.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick( View v )
+                {
+                    if ( mOnClickListener != null )
+                    {
+                        mOnClickListener.onContentClick();
+                    }
+                }
+            } );
+        }
     }
 
     public int getContentViewWidth()
@@ -173,105 +223,97 @@ public class SwipeLayout extends RelativeLayout
         return (getActionViewWidth() > 0);
     }
 
-    public void open()
-    {
-
-    }
-
-    public void close()
-    {
-
-    }
-
     public boolean isTouchDownOnAction( int x )
     {
-//        if ( mSwipeMode == SWIPE_MODE_COVER )
-//        {
-//            if ( mSwipeDirection == SWIPE_DIRECTION_RIGHT )
-//            {
-//                if ( x < getActionViewWidth() )
-//                {
-//                    return true;
-//                }
-//            }
-//            else if ( mSwipeDirection == SWIPE_DIRECTION_LEFT )
-//            {
-//                if ( x > getWidth() - getActionViewWidth() )
-//                {
-//                    return true;
-//                }
-//            }
-//        }
-//        else if ( mSwipeMode == SWIPE_MODE_SCROLL )
-//        {
-//            if ( mSwipeDirection == SWIPE_DIRECTION_RIGHT )
-//            {
-//
-//            }
-//            else if ( mSwipeDirection == SWIPE_DIRECTION_LEFT )
-//            {
-//
-//            }
-//        }
         if ( mSwipeDirection == SWIPE_DIRECTION_RIGHT )
         {
-            if ( x < getActionViewWidth() )
-            {
-                return true;
-            }
+            return x < getActionViewWidth();
         }
         else if ( mSwipeDirection == SWIPE_DIRECTION_LEFT )
         {
-            if ( x > getWidth() - getActionViewWidth() )
-            {
-                return true;
-            }
+            return x > getWidth() - getActionViewWidth();
         }
         return false;
     }
 
-    public void setOnSwipeItemClickListener( OnSwipeItemClickListener listener )
+    public void close()
     {
-        mOnSwipeItemClickListener = listener;
-        if ( mActionView != null )
-        {
-            if ( mActionView instanceof ViewGroup )
-            {
-                for ( int i = 0; i < ( (ViewGroup) mActionView ).getChildCount(); i++ )
-                {
-                    ( (ViewGroup) mActionView ).getChildAt( i ).setOnClickListener( new OnClickListener() {
-                        @Override
-                        public void onClick( View v )
-                        {
-                            mOnSwipeItemClickListener.onActionClick( v.getId() );
-                        }
-                    } );
-                }
-            }
-            else
-            {
-                mActionView.setOnClickListener( new OnClickListener() {
-                    @Override
-                    public void onClick( View v )
-                    {
-                        mOnSwipeItemClickListener.onActionClick( v.getId() );
-                    }
-                } );
-            }
-        }
         if ( mContentView != null )
         {
-            mContentView.setOnClickListener( new OnClickListener() {
-                @Override
-                public void onClick( View v )
-                {
-                    mOnSwipeItemClickListener.onContentClick();
-                }
-            } );
+            if ( mSwipeMode == SWIPE_MODE_COVER )
+            {
+                mContentView.setTranslationX( 0 );
+            }
+            else if ( mSwipeMode == SWIPE_MODE_SCROLL )
+            {
+                mScroller.startScroll( getScrollX(), 0, 0 - getScrollX(), 0 );
+                invalidate();
+            }
         }
     }
 
-    public interface OnSwipeItemClickListener
+    @Override
+    public void computeScroll()
+    {
+        super.computeScroll();
+        if ( mScroller.computeScrollOffset() )
+        {
+            scrollTo( mScroller.getCurrX(), 0 );
+            invalidate();
+        }
+    }
+
+    public void setOnClickListener( OnClickListener listener )
+    {
+        mOnClickListener = listener;
+//        if ( mActionView != null )
+//        {
+//            if ( mActionView instanceof ViewGroup )
+//            {
+//                for ( int i = 0; i < ( (ViewGroup) mActionView ).getChildCount(); i++ )
+//                {
+//                    ( (ViewGroup) mActionView ).getChildAt( i ).setOnClickListener( new View.OnClickListener() {
+//                        @Override
+//                        public void onClick( View v )
+//                        {
+//                            if ( mOnClickListener != null )
+//                            {
+//                                mOnClickListener.onActionClick( v.getId() );
+//                            }
+//                        }
+//                    } );
+//                }
+//            }
+//            else
+//            {
+//                mActionView.setOnClickListener( new View.OnClickListener() {
+//                    @Override
+//                    public void onClick( View v )
+//                    {
+//                        if ( mOnClickListener != null )
+//                        {
+//                            mOnClickListener.onActionClick( v.getId() );
+//                        }
+//                    }
+//                } );
+//            }
+//        }
+//        if ( mContentView != null )
+//        {
+//            mContentView.setOnClickListener( new View.OnClickListener() {
+//                @Override
+//                public void onClick( View v )
+//                {
+//                    if ( mOnClickListener != null )
+//                    {
+//                        mOnClickListener.onContentClick();
+//                    }
+//                }
+//            } );
+//        }
+    }
+
+    public interface OnClickListener
     {
         void onContentClick();
 

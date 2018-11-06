@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListener
 {
-    private final String TAG = "OnSwipeItemTouchListene";
+    private final String TAG = "SwipeItemTouchListener";
 
     //手势滑动速度检测
     private VelocityTracker mVelocityTracker = VelocityTracker.obtain();
@@ -24,9 +24,13 @@ public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListene
     {
         //获取触摸按下的childView
         View view = rv.findChildViewUnder( e.getX(), e.getY() );
-        if ( view == null || !(view instanceof SwipeLayout) || !( (SwipeLayout) view ).canSwipe() )
+        if ( !( view instanceof SwipeLayout ) || !( (SwipeLayout) view ).canSwipe() )
         {
-            closedOpenedItem();
+            if ( mLastHolder != null )
+            {
+                ((SwipeLayout) mLastHolder.itemView).close();
+                mLastHolder = null;
+            }
             return false;
         }
         switch ( e.getAction() )
@@ -41,7 +45,8 @@ public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListene
                 {
                     if ( mCurrHolder != mLastHolder )       //点击的不是已经打开的item,关闭已经打开的item
                     {
-                        closedOpenedItem();
+                        ((SwipeLayout) mLastHolder.itemView).close();
+                        mLastHolder = null;
                     }
                     else
                     {
@@ -52,7 +57,7 @@ public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListene
                         else
                         {
                             mMoving = true;
-                            ( (SwipeLayout) view ).requestDisallowInterceptTouchEvent( true );
+//                            ( (SwipeLayout) view ).requestDisallowInterceptTouchEvent( true );
                             return true;
                         }
                     }
@@ -70,23 +75,27 @@ public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListene
                     int direction = ( (SwipeLayout) view ).getSwipeDirection();
                     if ( direction == SwipeLayout.SWIPE_DIRECTION_RIGHT )
                     {
-                        if ( mVelocityTracker.getXVelocity() > 100 )
+                        if ( mVelocityTracker.getXVelocity() > 100 && Math.abs( mVelocityTracker.getYVelocity() ) < Math.abs( mVelocityTracker.getXVelocity() ) )
                         {
                             mMoving = true;
                         }
                     }
                     else if ( direction == SwipeLayout.SWIPE_DIRECTION_LEFT )
                     {
-                        if ( mVelocityTracker.getXVelocity() < -100 )
+                        if ( mVelocityTracker.getXVelocity() < -100 && Math.abs( mVelocityTracker.getYVelocity() ) < Math.abs( mVelocityTracker.getXVelocity() ) )
                         {
                             mMoving = true;
                         }
                     }
                     if ( mMoving )
                     {
-                        ( (SwipeLayout) view ).requestDisallowInterceptTouchEvent( true );
+//                        ( (SwipeLayout) view ).requestDisallowInterceptTouchEvent( true );
                         return true;
                     }
+                }
+                else
+                {
+                    return true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -326,7 +335,7 @@ public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListene
                 dx = 0;
             }
         }
-        mCurrHolder.itemView.setScrollX( dx );
+        mCurrHolder.itemView.setScrollX( 0 - dx );
     }
 
     private void touchUpOfScroll()
@@ -358,25 +367,6 @@ public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListene
             {
                 mCurrHolder.itemView.setScrollX( 0 );
                 mLastHolder = null;
-            }
-        }
-    }
-
-    private void closedOpenedItem()
-    {
-        if ( mLastHolder != null && mLastHolder.isSwipeLayout() )
-        {
-            int mode = mLastHolder.getSwipeMode();
-            if ( mode == SwipeLayout.SWIPE_MODE_COVER )
-            {
-                if ( mLastHolder.getContentView() != null )
-                {
-                    mLastHolder.getContentView().setTranslationX( 0 );
-                }
-            }
-            else if ( mode == SwipeLayout.SWIPE_MODE_SCROLL )
-            {
-                mLastHolder.itemView.setScrollX( 0 );
             }
         }
     }

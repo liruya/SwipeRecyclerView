@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.liruya.swiperecyclerview.OnSwipeItemClickListener;
 import com.liruya.swiperecyclerview.OnSwipeItemTouchListener;
 import com.liruya.swiperecyclerview.R;
-import com.liruya.swiperecyclerview.SimpleSwipeAdapter;
-import com.liruya.swiperecyclerview.SwipeViewHolder;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,21 +62,46 @@ public class MainFragment extends Fragment
 
     private void initData()
     {
-
-        mAdapter = new SimpleSwipeAdapter<Model>(getContext(), R.layout.item_swipe, mViewModel.createModels()) {
+        mAdapter = new MainAdapter( getContext(), mViewModel.createModels() );
+        ( (MainAdapter) mAdapter ).setOnSwipeItemClickListener( new OnSwipeItemClickListener() {
             @Override
-            public void onBindViewHolder( @NonNull SwipeViewHolder holder, int position )
+            public void onContentClick( int position )
             {
-                Model model = getItem( position );
-                if ( model != null )
-                {
-                    ImageView icon = holder.getContentView().findViewById( R.id.item_content_icon );
-                    TextView text = holder.getContentView().findViewById( R.id.item_content_text );
-                    icon.setImageResource( model.getDrawableResID() );
-                    text.setText( model.getText() );
-                }
+                Toast.makeText( getContext(), "Click Index: " + (position+1) + "  Content", Toast.LENGTH_SHORT )
+                     .show();
             }
-        };
+
+            @Override
+            public void onActionClick( int position, int actionid )
+            {
+                switch ( actionid )
+                {
+                    case R.id.remove:
+                        Toast.makeText( getContext(), "Click Index: " + (position+1) + "  Action - Remove", Toast.LENGTH_SHORT )
+                             .show();
+                        break;
+                    case R.id.upgrade:
+                        Toast.makeText( getContext(), "Click Index: " + (position+1) + "  Action - Upgrade", Toast.LENGTH_SHORT )
+                             .show();
+                        break;
+                }
+
+            }
+        } );
+//        mAdapter = new BaseSimpleSwipeAdapter<Model>( getContext(), R.layout.item_swipe_cover_left, mViewModel.createModels()) {
+//            @Override
+//            public void onBindViewHolder( @NonNull SwipeViewHolder holder, int position )
+//            {
+//                Model model = getItem( position );
+//                if ( model != null )
+//                {
+//                    ImageView icon = holder.getContentView().findViewById( R.id.item_content_icon );
+//                    TextView text = holder.getContentView().findViewById( R.id.item_content_text );
+//                    icon.setImageResource( model.getDrawableResID() );
+//                    text.setText( model.getText() );
+//                }
+//            }
+//        };
         mRecyclerView.setAdapter( mAdapter );
     }
 
