@@ -1,22 +1,21 @@
-package com.liruya.swiperecyclerview.ui.main;
+package com.liruya.swiperecyclerviewtest.ui.main;
 
 import android.content.Context;
-import android.view.View;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.liruya.swiperecyclerview.BaseSimpleSwipeAdapter;
-import com.liruya.swiperecyclerview.R;
+import com.liruya.swiperecyclerview.SimpleSwipeAdapter;
 import com.liruya.swiperecyclerview.SwipeLayout;
 import com.liruya.swiperecyclerview.SwipeViewHolder;
+import com.liruya.swiperecyclerviewtest.R;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
 
-public class MainAdapter extends BaseSimpleSwipeAdapter<Model, MainAdapter.MainSwipeViewHolder>
+public class MainAdapter extends SimpleSwipeAdapter<Model, MainAdapter.MainSwipeViewHolder>
 {
-    public MainAdapter( @NonNull Context context, List< Model > list )
+    public MainAdapter(@NonNull Context context, List< Model > list)
     {
         super( context, list );
     }
@@ -98,7 +97,7 @@ public class MainAdapter extends BaseSimpleSwipeAdapter<Model, MainAdapter.MainS
         private ImageView icon;
         private TextView text;
 
-        public MainSwipeViewHolder( @NonNull View itemView )
+        public MainSwipeViewHolder( @NonNull SwipeLayout itemView )
         {
             super( itemView );
             if ( getContentView() != null )

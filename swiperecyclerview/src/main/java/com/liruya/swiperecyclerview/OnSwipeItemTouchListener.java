@@ -1,11 +1,11 @@
 package com.liruya.swiperecyclerview;
 
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListener
 {
@@ -20,7 +20,7 @@ public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListene
     private int mTouchX;
 
     @Override
-    public boolean onInterceptTouchEvent( @NonNull RecyclerView rv, @NonNull MotionEvent e )
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e)
     {
         //获取触摸按下的childView
         View view = rv.findChildViewUnder( e.getX(), e.getY() );

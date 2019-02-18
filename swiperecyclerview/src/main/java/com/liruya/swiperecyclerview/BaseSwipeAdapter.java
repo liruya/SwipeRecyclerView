@@ -1,13 +1,13 @@
 package com.liruya.swiperecyclerview;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class BaseSwipeAdapter<VH extends SwipeViewHolder> extends RecyclerView.Adapter<VH>
 {
@@ -19,7 +19,7 @@ public abstract class BaseSwipeAdapter<VH extends SwipeViewHolder> extends Recyc
         mOnSwipeItemClickListener = listener;
     }
 
-    public BaseSwipeAdapter( @NonNull Context context )
+    public BaseSwipeAdapter( @NonNull Context context)
     {
         mContext = context;
     }
@@ -28,7 +28,7 @@ public abstract class BaseSwipeAdapter<VH extends SwipeViewHolder> extends Recyc
     @Override
     public VH onCreateViewHolder( @NonNull ViewGroup parent, int viewType )
     {
-        @LayoutRes int layoutid = getLayoutResID( viewType );
+        @LayoutRes int layoutid = getLayoutResID(viewType);
         if ( layoutid != 0 )
         {
             View view = LayoutInflater.from( mContext ).inflate( layoutid, parent, false );

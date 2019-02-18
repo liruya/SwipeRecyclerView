@@ -1,4 +1,4 @@
-package com.liruya.swiperecyclerview;
+package com.liruya.swiperecyclerviewtest;
 
 import org.junit.Test;
 

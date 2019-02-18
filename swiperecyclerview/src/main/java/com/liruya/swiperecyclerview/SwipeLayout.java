@@ -2,16 +2,15 @@ package com.liruya.swiperecyclerview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 
 public class SwipeLayout extends RelativeLayout
 {
@@ -62,7 +61,7 @@ public class SwipeLayout extends RelativeLayout
     {
         super( context, attrs, defStyleAttr );
 
-        TypedArray a = context.obtainStyledAttributes( attrs, R.styleable.SwipeLayout );
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeLayout);
         mSwipeMode = a.getInt( R.styleable.SwipeLayout_swipeMode, SWIPE_MODE_DISALED );
         mSwipeDirection = a.getInt( R.styleable.SwipeLayout_swipeDirection, SWIPE_DIRECTION_LEFT );
         mContentLayoutResID = a.getResourceId( R.styleable.SwipeLayout_contentLayout, 0 );
@@ -72,7 +71,7 @@ public class SwipeLayout extends RelativeLayout
         initView( context );
     }
 
-    private void initView( @NonNull Context context )
+    private void initView( @NonNull Context context)
     {
         mScroller = new Scroller( context );
         LayoutInflater inflater = LayoutInflater.from( context );
@@ -317,6 +316,6 @@ public class SwipeLayout extends RelativeLayout
     {
         void onContentClick();
 
-        void onActionClick( @IdRes int actionid );
+        void onActionClick( @IdRes int actionid);
     }
 }

@@ -1,11 +1,12 @@
-package com.liruya.swiperecyclerview.ui.main;
+package com.liruya.swiperecyclerviewtest.ui.main;
 
-import com.liruya.swiperecyclerview.R;
+import android.arch.lifecycle.ViewModel;
+
+import com.liruya.swiperecyclerviewtest.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel
 {

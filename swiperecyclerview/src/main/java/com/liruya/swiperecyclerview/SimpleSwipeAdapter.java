@@ -1,16 +1,16 @@
 package com.liruya.swiperecyclerview;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
 
-public abstract class BaseSimpleSwipeAdapter<T, VH extends SwipeViewHolder> extends BaseSwipeAdapter<VH>
+public abstract class SimpleSwipeAdapter<T, VH extends SwipeViewHolder> extends BaseSwipeAdapter<VH>
 {
     private List<T> mList;
 
-    public BaseSimpleSwipeAdapter( @NonNull Context context, List< T > list )
+    public SimpleSwipeAdapter(@NonNull Context context, List< T > list)
     {
         super( context );
         mList = list;

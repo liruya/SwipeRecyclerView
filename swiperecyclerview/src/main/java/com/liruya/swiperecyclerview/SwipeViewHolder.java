@@ -1,64 +1,39 @@
 package com.liruya.swiperecyclerview;
 
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class SwipeViewHolder extends RecyclerView.ViewHolder
 {
-    public SwipeViewHolder( @NonNull View itemView )
+    public SwipeViewHolder( @NonNull SwipeLayout itemView)
     {
         super( itemView );
     }
 
-    protected final boolean isSwipeLayout()
-    {
-        return (itemView instanceof SwipeLayout);
-    }
-
     protected final View getContentView()
     {
-        if ( itemView instanceof SwipeLayout )
-        {
-            return ( (SwipeLayout) itemView ).getContentView();
-        }
-        return null;
+        return ( (SwipeLayout) itemView ).getContentView();
     }
 
     protected final View getActionView()
     {
-        if ( itemView instanceof SwipeLayout )
-        {
-            return ( (SwipeLayout) itemView ).getActionView();
-        }
-        return null;
+        return ( (SwipeLayout) itemView ).getActionView();
     }
 
     protected final int getActionViewWidth()
     {
-        if ( itemView instanceof SwipeLayout )
-        {
-            return ( (SwipeLayout) itemView ).getActionViewWidth();
-        }
-        return 0;
+        return ( (SwipeLayout) itemView ).getActionViewWidth();
     }
 
     protected final int getSwipeMode()
     {
-        if ( itemView instanceof SwipeLayout )
-        {
-            return ( (SwipeLayout) itemView ).getSwipeMode();
-        }
-        return -1;
+        return ( (SwipeLayout) itemView ).getSwipeMode();
     }
 
     protected final int getSwipeDirection()
     {
-        if ( itemView instanceof SwipeLayout )
-        {
-            return ( (SwipeLayout) itemView ).getSwipeDirection();
-        }
-        return -1;
+        return ( (SwipeLayout) itemView ).getSwipeDirection();
     }
 }

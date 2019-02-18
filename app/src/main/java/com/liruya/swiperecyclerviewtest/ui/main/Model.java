@@ -1,6 +1,6 @@
-package com.liruya.swiperecyclerview.ui.main;
+package com.liruya.swiperecyclerviewtest.ui.main;
 
-import androidx.annotation.DrawableRes;
+import android.support.annotation.DrawableRes;
 
 public class Model
 {

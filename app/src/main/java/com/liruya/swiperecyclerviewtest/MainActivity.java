@@ -1,9 +1,9 @@
-package com.liruya.swiperecyclerview;
+package com.liruya.swiperecyclerviewtest;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import com.liruya.swiperecyclerview.ui.main.MainFragment;
+import com.liruya.swiperecyclerviewtest.ui.main.MainFragment;
 
 public class MainActivity extends AppCompatActivity
 {
