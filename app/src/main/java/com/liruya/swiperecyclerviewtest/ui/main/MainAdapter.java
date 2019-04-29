@@ -23,7 +23,8 @@ public class MainAdapter extends SimpleSwipeAdapter<Model, MainAdapter.MainSwipe
     @Override
     public int getItemViewType( int position )
     {
-        return (position%5);
+        return 1;
+//        return (position%5);
     }
 
     @Override

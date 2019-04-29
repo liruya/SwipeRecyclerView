@@ -31,6 +31,11 @@ public class SwipeLayout extends RelativeLayout
     private int mSwipeDirection;
 
     /**
+     * swiped or not
+     */
+    private boolean mSwiped;
+
+    /**
      * contentLayoutResID: create custom layout as content
      */
     private @LayoutRes int mContentLayoutResID;
@@ -242,13 +247,19 @@ public class SwipeLayout extends RelativeLayout
             if ( mSwipeMode == SWIPE_MODE_COVER )
             {
                 mContentView.setTranslationX( 0 );
+                mSwiped = false;
             }
             else if ( mSwipeMode == SWIPE_MODE_SCROLL )
             {
                 mScroller.startScroll( getScrollX(), 0, 0 - getScrollX(), 0 );
                 invalidate();
+                mSwiped = false;
             }
         }
+    }
+
+    public final boolean isSwiped() {
+        return mSwiped;
     }
 
     @Override
@@ -265,51 +276,6 @@ public class SwipeLayout extends RelativeLayout
     public void setOnClickListener( OnClickListener listener )
     {
         mOnClickListener = listener;
-//        if ( mActionView != null )
-//        {
-//            if ( mActionView instanceof ViewGroup )
-//            {
-//                for ( int i = 0; i < ( (ViewGroup) mActionView ).getChildCount(); i++ )
-//                {
-//                    ( (ViewGroup) mActionView ).getChildAt( i ).setOnClickListener( new View.OnClickListener() {
-//                        @Override
-//                        public void onClick( View v )
-//                        {
-//                            if ( mOnClickListener != null )
-//                            {
-//                                mOnClickListener.onActionClick( v.getId() );
-//                            }
-//                        }
-//                    } );
-//                }
-//            }
-//            else
-//            {
-//                mActionView.setOnClickListener( new View.OnClickListener() {
-//                    @Override
-//                    public void onClick( View v )
-//                    {
-//                        if ( mOnClickListener != null )
-//                        {
-//                            mOnClickListener.onActionClick( v.getId() );
-//                        }
-//                    }
-//                } );
-//            }
-//        }
-//        if ( mContentView != null )
-//        {
-//            mContentView.setOnClickListener( new View.OnClickListener() {
-//                @Override
-//                public void onClick( View v )
-//                {
-//                    if ( mOnClickListener != null )
-//                    {
-//                        mOnClickListener.onContentClick();
-//                    }
-//                }
-//            } );
-//        }
     }
 
     public interface OnClickListener

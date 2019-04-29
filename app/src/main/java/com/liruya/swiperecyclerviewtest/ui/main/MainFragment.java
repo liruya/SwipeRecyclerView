@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import com.liruya.swiperecyclerview.OnSwipeItemClickListener;
 import com.liruya.swiperecyclerview.OnSwipeItemTouchListener;
 import com.liruya.swiperecyclerviewtest.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainFragment extends Fragment
 {
     private static final String TAG = "MainFragment";
@@ -24,7 +28,11 @@ public class MainFragment extends Fragment
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
 
+    private final List<Model> mModels = new ArrayList<>();
+
     private MainViewModel mViewModel;
+
+    private final OnSwipeItemTouchListener mSwipeItemTouchListener = new OnSwipeItemTouchListener();
 
     public static MainFragment newInstance()
     {
@@ -56,28 +64,34 @@ public class MainFragment extends Fragment
         mRecyclerView = view.findViewById( R.id.recyclerview );
         mRecyclerView.setLayoutManager( new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false ));
         mRecyclerView.addItemDecoration( new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL ));
-        mRecyclerView.addOnItemTouchListener( new OnSwipeItemTouchListener() );
+        mRecyclerView.addOnItemTouchListener( mSwipeItemTouchListener );
     }
 
     private void initData()
     {
-        mAdapter = new MainAdapter( getContext(), mViewModel.createModels() );
+        mModels.addAll(mViewModel.createModels());
+        mAdapter = new MainAdapter( getContext(), mModels );
         ( (MainAdapter) mAdapter ).setOnSwipeItemClickListener( new OnSwipeItemClickListener() {
             @Override
-            public void onContentClick( int position )
+            public void onContentClick( final int position )
             {
+                Log.e(TAG, "onContentClick: " + position + " / " + mModels.size() );
                 Toast.makeText( getContext(), "Click Index: " + (position+1) + "  Content", Toast.LENGTH_SHORT )
                      .show();
             }
 
             @Override
-            public void onActionClick( int position, int actionid )
+            public void onActionClick( final int position, int actionid )
             {
                 switch ( actionid )
                 {
                     case R.id.remove:
+                        mSwipeItemTouchListener.close();
                         Toast.makeText( getContext(), "Click Index: " + (position+1) + "  Action - Remove", Toast.LENGTH_SHORT )
                              .show();
+                        mModels.remove(position);
+//                        mAdapter.notifyDataSetChanged();
+                        mAdapter.notifyItemRemoved(position);
                         break;
                     case R.id.upgrade:
                         Toast.makeText( getContext(), "Click Index: " + (position+1) + "  Action - Upgrade", Toast.LENGTH_SHORT )

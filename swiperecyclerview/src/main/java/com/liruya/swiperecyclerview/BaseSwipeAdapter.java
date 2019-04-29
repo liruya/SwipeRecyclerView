@@ -41,7 +41,7 @@ public abstract class BaseSwipeAdapter<VH extends SwipeViewHolder> extends Recyc
     }
 
     @Override
-    public void onBindViewHolder( @NonNull VH holder, final int position )
+    public void onBindViewHolder(@NonNull final VH holder, final int position)
     {
         onBindSwipeViewHolder( holder, position );
         if ( holder.itemView instanceof SwipeLayout )
@@ -52,7 +52,7 @@ public abstract class BaseSwipeAdapter<VH extends SwipeViewHolder> extends Recyc
                 {
                     if ( mOnSwipeItemClickListener != null )
                     {
-                        mOnSwipeItemClickListener.onContentClick( position );
+                        mOnSwipeItemClickListener.onContentClick(holder.getAdapterPosition());
                     }
                 }
 
@@ -61,11 +61,15 @@ public abstract class BaseSwipeAdapter<VH extends SwipeViewHolder> extends Recyc
                 {
                     if ( mOnSwipeItemClickListener != null )
                     {
-                        mOnSwipeItemClickListener.onActionClick( position, actionid );
+                        mOnSwipeItemClickListener.onActionClick(holder.getAdapterPosition(), actionid);
                     }
                 }
             } );
         }
+    }
+
+    public void close() {
+
     }
 
     protected abstract @LayoutRes int getLayoutResID( int viewType );

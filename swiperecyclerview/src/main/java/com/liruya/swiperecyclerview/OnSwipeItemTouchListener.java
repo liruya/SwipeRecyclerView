@@ -370,4 +370,11 @@ public class OnSwipeItemTouchListener implements RecyclerView.OnItemTouchListene
             }
         }
     }
+
+    public void close() {
+        if (mLastHolder != null) {
+            ((SwipeLayout) mLastHolder.itemView).close();
+            mLastHolder = null;
+        }
+    }
 }
